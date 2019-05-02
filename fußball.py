@@ -98,7 +98,7 @@ def get_football_result(search,ask,key):
         elif (response['matches'][i]['score']['fullTime']['homeTeam'] < response['matches'][i]['score']['fullTime']['awayTeam']):
             return(response['matches'][i]['homeTeam']['name']+' wurde von der Mannschaft '+response['matches'][i]['awayTeam']['name']+' im Fußball-'+str(response['matches'][i]['competition']['name'])+'-Match '+str(response['matches'][i]['score']['fullTime']['homeTeam'])+' zu '+str(response['matches'][i]['score']['fullTime']['awayTeam'])+' vom Platz gefegt.')
         elif (response['matches'][i]['score']['fullTime']['homeTeam'] == response['matches'][i]['score']['fullTime']['awayTeam']):
-            return(response['matches'][i]['homeTeam']['name']+' hat die Mannschaft '+response['matches'][i]['awayTeam']['name']+' im Fußball-'+str(response['matches'][i]['competition']['name'])+'-Match nicht besiegen können, wegen einem'+str(response['matches'][i]['score']['fullTime']['homeTeam'])+' zu '+str(response['matches'][i]['score']['fullTime']['awayTeam']))
+            return(response['matches'][i]['homeTeam']['name']+' hat die Mannschaft '+response['matches'][i]['awayTeam']['name']+' im Fußball-'+str(response['matches'][i]['competition']['name'])+'-Match nicht besiegen können, wegen einem '+str(response['matches'][i]['score']['fullTime']['homeTeam'])+' zu '+str(response['matches'][i]['score']['fullTime']['awayTeam']))
     elif(ask == 1):
         response = get_data('/v2/teams/'+team_id+'/matches?status=SCHEDULED&limit=1',key)
         if (tag_diff(str(response['matches'][0]['utcDate'])) == 0):
