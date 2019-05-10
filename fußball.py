@@ -3,6 +3,7 @@ import json
 from datetime import date,datetime
 import re
 import time
+from random import choice
 monate = ['Januar', 'Februar', 'März','April','Mai','Juni','Juli','August','September','November','Dezember']
 def tag_diff(second_date):
     datumB = date(int(re.split('[^\d]', second_date)[0]), int(re.split('[^\d]', second_date)[1]), int(re.split('[^\d]', second_date)[2])) 
@@ -93,10 +94,18 @@ def get_football_result(search,ask,key):
     if(ask == 0):
         response = get_data('/v2/teams/'+team_id+'/matches?status=FINISHED',key)
         i=-1
+        home_score = response['matches'][i]['score']['fullTime']['homeTeam']
+        away_score = response['matches'][i]['score']['fullTime']['awayTeam']
         if (response['matches'][i]['score']['fullTime']['homeTeam'] > response['matches'][i]['score']['fullTime']['awayTeam']):
-            return(response['matches'][i]['homeTeam']['name']+' hat die Mannschaft '+response['matches'][i]['awayTeam']['name']+' im Fußball-'+str(response['matches'][i]['competition']['name'])+'-Match '+str(response['matches'][i]['score']['fullTime']['homeTeam'])+' zu '+str(response['matches'][i]['score']['fullTime']['awayTeam'])+' vom Platz gefegt.')
+            if(home_score-3 > away_score or home_score < away_score-3):
+                return(response['matches'][i]['homeTeam']['name']+' hat die Mannschaft '+response['matches'][i]['awayTeam']['name']+' im Fußball-'+str(response['matches'][i]['competition']['name'])+'-Match '+str(response['matches'][i]['score']['fullTime']['homeTeam'])+' zu '+str(response['matches'][i]['score']['fullTime']['awayTeam'])+' '+choice(['vom Platz gefegt.','abserviert.','vernichtet.','besiegt.','bezwungen.','geschlagen.']))
+            else:
+                return(response['matches'][i]['homeTeam']['name']+' hat die Mannschaft '+response['matches'][i]['awayTeam']['name']+' im Fußball-'+str(response['matches'][i]['competition']['name'])+'-Match '+str(response['matches'][i]['score']['fullTime']['homeTeam'])+' zu '+str(response['matches'][i]['score']['fullTime']['awayTeam'])+' '+choice(['besiegt.','bezwungen.','geschlagen.']))
         elif (response['matches'][i]['score']['fullTime']['homeTeam'] < response['matches'][i]['score']['fullTime']['awayTeam']):
-            return(response['matches'][i]['homeTeam']['name']+' wurde von der Mannschaft '+response['matches'][i]['awayTeam']['name']+' im Fußball-'+str(response['matches'][i]['competition']['name'])+'-Match '+str(response['matches'][i]['score']['fullTime']['homeTeam'])+' zu '+str(response['matches'][i]['score']['fullTime']['awayTeam'])+' vom Platz gefegt.')
+            if(home_score-3 > away_score or home_score < away_score-3):
+                return(response['matches'][i]['homeTeam']['name']+' wurde von der Mannschaft '+response['matches'][i]['awayTeam']['name']+' im Fußball-'+str(response['matches'][i]['competition']['name'])+'-Match '+str(response['matches'][i]['score']['fullTime']['homeTeam'])+' zu '+str(response['matches'][i]['score']['fullTime']['awayTeam'])+' '+choice(['vom Platz gefegt.','abserviert.','vernichtet.','besiegt.','bezwungen.','geschlagen.']))
+            else:
+                return(response['matches'][i]['homeTeam']['name']+' wurde von der Mannschaft '+response['matches'][i]['awayTeam']['name']+' im Fußball-'+str(response['matches'][i]['competition']['name'])+'-Match '+str(response['matches'][i]['score']['fullTime']['homeTeam'])+' zu '+str(response['matches'][i]['score']['fullTime']['awayTeam'])+' '+choice(['besiegt.','bezwungen.','geschlagen.']))
         elif (response['matches'][i]['score']['fullTime']['homeTeam'] == response['matches'][i]['score']['fullTime']['awayTeam']):
             return(response['matches'][i]['homeTeam']['name']+' hat die Mannschaft '+response['matches'][i]['awayTeam']['name']+' im Fußball-'+str(response['matches'][i]['competition']['name'])+'-Match nicht besiegen können, wegen einem '+str(response['matches'][i]['score']['fullTime']['homeTeam'])+' zu '+str(response['matches'][i]['score']['fullTime']['awayTeam']))
     elif(ask == 1):
