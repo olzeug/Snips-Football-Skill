@@ -66,7 +66,7 @@ def get_team_id(search):
     team_name = []
     count = []
     for y in ligen:
-        with open('/var/lib/snips/dateien/Datenbanken/ligen/'+y.lower()+'.json') as f:
+        with open('/var/lib/snips/skills/Snips-Football-Skill/ligen/'+y.lower()+'.json') as f:
             response = json.load(f)
         i = 0
         while True:
