@@ -30,10 +30,10 @@ Here you (copy and) paste the key you generated before.</li>
 <div class="highlight highlight-source-shell"><pre>sam install skills</pre></div>
 </li>
 <li>
-<p>You must have a league file in the directory (/var/lib/snips/dateien/Datenbanken/ligen) which you fill with a small Python program(like <a href="https://github.com/olzeug/Snips-Football-Skill/blob/master/test_write.py">this</a>)(Football-data.org Api: "/v2/competitions/{id}/teams").
+<p>You must have a league file in the directory (/var/lib/snips/Snips-Football-Skill/ligen) which you fill with a small Python program(like <a href="https://github.com/olzeug/Snips-Football-Skill/blob/master/test_write.py">this</a>)(Football-data.org Api: "/v2/competitions/{id}/teams").
 <br>   It is important that the folder and files belong to the owner and group "_snips_skills". 
 <br>You can change the rights with the following command.</p>
-  <div class="highlight highlight-source-shell"><pre>sudo chmod -R _snips_skills:_snips_skills /var/lib/snips/dateien/Datenbanken/ligen/</pre></div>
+  <div class="highlight highlight-source-shell"><pre>sudo chmod -R _snips_skills:_snips_skills /var/lib/snips/Snips-Football-Skill/ligen/</pre></div>
       </li>
   <li><p>I had to run the following command the first time I installed it to make it work.</p><div class="highlight highlight-source-shell"><pre>sudo chmod +x /var/lib/snips/skills/Snips-Football-Skill/action-nextGame-Fußball.py /var/lib/snips/skills/Snips-Football-Skill/action-lastGame-Fußball.py</pre></div></li>
 </ol>
