@@ -37,6 +37,11 @@ def intent_callback(hermes, intent_message):
             hermes.publish_end_session(intentMessage.session_id, str(get_football_result(str(intentMessage.slots.footballTeam.first().value),1,str(conf['secret']['api_key']))))
         except:
             hermes.publish_end_session(intentMessage.session_id,"Es konnten keine Daten abgerufen werden")
+    elif intentname == user_intent("getTrainer"):
+        try:
+            hermes.publish_end_session(intentMessage.session_id, str(get_football_result(str(intentMessage.slots.footballTeam.first().value),2,str(conf['secret']['api_key']))))
+        except:
+            hermes.publish_end_session(intentMessage.session_id,"Es konnten keine Daten abgerufen werden")
 
 if __name__ == "__main__":
     #config = read_configuration_file("config.ini")
