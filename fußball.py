@@ -120,3 +120,13 @@ def get_football_result(search,ask,key):
             return('Das Team "'+str(response['matches'][0]['homeTeam']['name'])+'" trifft auf das Team "'+str(response['matches'][0]['awayTeam']['name'])+'" '+datum)
         else:
             return('Das Team "'+str(response['matches'][0]['awayTeam']['name'])+'" trifft auf das Team "'+str(response['matches'][0]['homeTeam']['name'])+'" '+datum)
+    elif(ask == 2):
+        response = get_data("/v2/teams/"+str(team_id),key)
+        for i in response["squad"]:
+            if i["role"] == "COACH":
+                trainer = i["name"]
+                break
+        try:
+            return("Das Team {} wird von dem Trainer {} trainiert.".format(response["name"],trainer))
+        except:
+            return("Das Team {} besitzt zurzeit keinen richtigen Trainer.".format(response["name"]))
