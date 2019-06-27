@@ -15,21 +15,10 @@ def get_data(pfad,key):
     connection.request('GET', pfad, None, headers )
     response = json.loads(connection.getresponse().read().decode())
     return(response)
-def wörter_trennen(t):
-        text =[]
-        wort_teil = ''
-        for i in str(t):
-            if(i == ' '):
-                text += [wort_teil]
-                wort_teil = ''
-            else:
-                wort_teil = wort_teil+str(i)
-        text += [wort_teil]
-        return(text)
 def compare(a,b):
         found_count = 0
-        text_a = wörter_trennen(a.lower())
-        text_b = wörter_trennen(b.lower())
+        text_a = a.lower().split()
+        text_b = b.lower().split()
         if (a == b):
             found_count = len(text_a)
         else:
