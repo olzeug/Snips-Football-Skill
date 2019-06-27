@@ -29,16 +29,9 @@ Here you (copy and) paste the key you generated before.</li>
 <p>To update the values simply run</p>
 <div class="highlight highlight-source-shell"><pre>sam install skills</pre></div>
 </li>
-<li>
-<p>You must have a league file in the directory (/var/lib/snips/Snips-Football-Skill/ligen) which you fill with a small Python program(like <a href="https://github.com/olzeug/Snips-Football-Skill/blob/master/test_write.py">this</a>)(Football-data.org Api: "/v2/competitions/{id}/teams").
-<br>   It is important that the folder and files belong to the owner and group "_snips_skills". 
-<br>You can change the rights with the following command.</p>
-  <div class="highlight highlight-source-shell"><pre>sudo chmod -R _snips_skills:_snips_skills /var/lib/snips/Snips-Football-Skill/ligen/</pre></div>
-      </li>
-  <li><p>I had to run the following command the first time I installed it to make it work.</p><div class="highlight highlight-source-shell"><pre>sudo chmod +x /var/lib/snips/skills/Snips-Football-Skill/action-nextGame-Fußball.py /var/lib/snips/skills/Snips-Football-Skill/action-lastGame-Fußball.py</pre></div></li>
 </ol>
 <h2><a id="user-content-usage" class="anchor" aria-hidden="true" href="#usage"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
-<p>At the moment you can ask for the last game and the next game.</p>
+<p>At the moment you can ask for the last game, the next game and the current trainer.</p>
 <h3><a id="user-content-example-sentences" class="anchor" aria-hidden="true" href="#example-sentences"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example sentences</h3>
 <ul>
 <li><em>Wie hat Paris gespielt?</em></li>
