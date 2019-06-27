@@ -21,7 +21,12 @@ def get_data(pfad,key):
 ligen = ['BL1', 'PD', 'PL', 'SA', 'FL1','DED']
 for i in ligen:
     response = get_data('/v2/competitions/'+i+'/teams',str(conf['secret']['api_key']))
-    file = open(pfad+i.lower()+'.json','w')
-    file.write(str(response))
-    file.close()
+    try:
+        json.loads(response)["errorCode"]
+        print(json.loads(response)["message"])
+        break
+    except:
+        file = open(pfad+i.lower()+'.json','w')
+        file.write(str(response))
+        file.close()
 
