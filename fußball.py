@@ -35,20 +35,6 @@ def compare(a,b):
                         if(a == y == y in a):
                             found_count += 1
         return(found_count)
-def end_stand(a, team_id, response):
-    if (response['matches'][a]['score']['winner'] == "HOME_TEAM"):
-        if (str(response['matches'][a]['homeTeam']['id']) == str(team_id)):
-            last_game = "win"
-        elif(str(response['matches'][a]['awayTeam']['id']) == str(team_id)):
-            last_game = "lose"
-    elif (str(response['matches'][a]['score']['winner']) == "AWAY_TEAM"):
-        if (str(response['matches'][a]['awayTeam']['id']) == str(team_id)):
-            last_game = "win"
-        elif(str(response['matches'][a]['homeTeam']['id']) == str(team_id)):
-            last_game = "lose"
-    elif (str(response['matches'][a]['score']['winner']) == "DRAW"):
-        last_game = "draw"
-    return(last_game)
 def get_team_id(search):
     ligen = ['BL1', 'PD', 'PL', 'SA', 'FL1']
     team_id = []
