@@ -1,10 +1,24 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import http.client
 import json
-from datetime import date,datetime
+from datetime import date
 import re
 import time
+import importlib
 from random import choice
-monate = ['Januar', 'Februar', 'März','April','Mai','Juni','Juli','August','September','November','Dezember']
+from CompareList import CompareList
+from snipskit.apps import SnipsAppMixin
+i18n = importlib.import_module("translation."+SnipsAppMixin().assistant["language"])
+teams = []
+for y in i18n.ligen:
+    with open('/var/lib/snips/skills/Snips-Football-Skill/ligen/'+y.lower()+'.json') as f:
+        response = json.loads(f.read())
+    for t in response["teams"]:
+        teams += [t["name"]+"|"+str(t["id"])]
+c = CompareList(teams)
+
 def tag_diff(second_date):
     datumB = date(int(re.split('[^\d]', second_date)[0]), int(re.split('[^\d]', second_date)[1]), int(re.split('[^\d]', second_date)[2])) 
     datumA = date(int(re.split('[^\d]', time.strftime("%Y-%m-%d"))[0]), int(re.split('[^\d]', time.strftime("%Y-%m-%d"))[1]), int(re.split('[^\d]', time.strftime("%Y-%m-%d"))[2]))
@@ -15,86 +29,45 @@ def get_data(pfad,key):
     connection.request('GET', pfad, None, headers )
     response = json.loads(connection.getresponse().read().decode())
     return(response)
-def compare(a,b):
-        found_count = 0
-        text_a = a.lower().split()
-        text_b = b.lower().split()
-        if (a == b):
-            found_count = len(text_a)
-        else:
-            for a in text_a:
-                for t in text_b:
-                    if a == t:
-                        found_count += 1
-                if(len(a) > 3):
-                    for y in text_b:
-                        if(a in y or y in a):
-                            found_count += 1
-                else:
-                    for y in text_b:
-                        if(a == y == y in a):
-                            found_count += 1
-        return(found_count)
 def get_team_id(search):
-    ligen = ['BL1', 'PD', 'PL', 'SA', 'FL1']
-    team_id = []
-    team_name = []
-    count = []
-    for y in ligen:
-        with open('/var/lib/snips/skills/Snips-Football-Skill/ligen/'+y.lower()+'.json') as f:
-            response = json.load(f)
-        i = 0
-        while True:
-            try:
-                name = compare(search, str(response['teams'][i]['name']))
-                shortName = compare(search, str(response['teams'][i]['shortName']))
-                tla = compare(search, str(response['teams'][i]['tla']))
-                if(name>0 or shortName>0 or tla>0):
-                    count += [str(int(name)+int(shortName)+int(tla))]
-                    team_id += [str(response['teams'][i]['id'])]
-                    team_name += [str(response['teams'][i]['name'])]
-                i += 1
-            except:
-                break
-    ta = 0
-    team = 0
-    for t in count:
-        if (int(count[ta]) == int(max(count))):
-            team = int(ta)
-            break
-        ta += 1
-    return([str(team_id[team]),str(team_name[team])])
+    result = c.liste(search)
+    return(str(result[0]).split("|"))
 def get_football_result(search,ask,key):
-    team_id,team_name = get_team_id(search)
+    team_name,team_id = get_team_id(search)
     if(ask == 0):
         response = get_data('/v2/teams/'+team_id+'/matches?status=FINISHED',key)
         i=-1
-        home_score = response['matches'][i]['score']['fullTime']['homeTeam']
-        away_score = response['matches'][i]['score']['fullTime']['awayTeam']
-        if (response['matches'][i]['score']['fullTime']['homeTeam'] > response['matches'][i]['score']['fullTime']['awayTeam']):
-            if(home_score-3 > away_score or home_score < away_score-3):
-                return(response['matches'][i]['homeTeam']['name']+' hat die Mannschaft '+response['matches'][i]['awayTeam']['name']+' im Fußball-'+str(response['matches'][i]['competition']['name'])+'-Match '+str(response['matches'][i]['score']['fullTime']['homeTeam'])+' zu '+str(response['matches'][i]['score']['fullTime']['awayTeam'])+' '+choice(['vom Platz gefegt.','abserviert.','vernichtet.','besiegt.','bezwungen.','geschlagen.']))
-            else:
-                return(response['matches'][i]['homeTeam']['name']+' hat die Mannschaft '+response['matches'][i]['awayTeam']['name']+' im Fußball-'+str(response['matches'][i]['competition']['name'])+'-Match '+str(response['matches'][i]['score']['fullTime']['homeTeam'])+' zu '+str(response['matches'][i]['score']['fullTime']['awayTeam'])+' '+choice(['besiegt.','bezwungen.','geschlagen.']))
-        elif (response['matches'][i]['score']['fullTime']['homeTeam'] < response['matches'][i]['score']['fullTime']['awayTeam']):
-            if(home_score-3 > away_score or home_score < away_score-3):
-                return(response['matches'][i]['homeTeam']['name']+' wurde von der Mannschaft '+response['matches'][i]['awayTeam']['name']+' im Fußball-'+str(response['matches'][i]['competition']['name'])+'-Match '+str(response['matches'][i]['score']['fullTime']['homeTeam'])+' zu '+str(response['matches'][i]['score']['fullTime']['awayTeam'])+' '+choice(['vom Platz gefegt.','abserviert.','vernichtet.','besiegt.','bezwungen.','geschlagen.']))
-            else:
-                return(response['matches'][i]['homeTeam']['name']+' wurde von der Mannschaft '+response['matches'][i]['awayTeam']['name']+' im Fußball-'+str(response['matches'][i]['competition']['name'])+'-Match '+str(response['matches'][i]['score']['fullTime']['homeTeam'])+' zu '+str(response['matches'][i]['score']['fullTime']['awayTeam'])+' '+choice(['besiegt.','bezwungen.','geschlagen.']))
-        elif (response['matches'][i]['score']['fullTime']['homeTeam'] == response['matches'][i]['score']['fullTime']['awayTeam']):
-            return(response['matches'][i]['homeTeam']['name']+' hat die Mannschaft '+response['matches'][i]['awayTeam']['name']+' im Fußball-'+str(response['matches'][i]['competition']['name'])+'-Match nicht besiegen können, wegen einem '+str(response['matches'][i]['score']['fullTime']['homeTeam'])+' zu '+str(response['matches'][i]['score']['fullTime']['awayTeam']))
+        if response["count"] == 0:
+            return(choice(i18n.NO_GAMES_EXIST).format(team=team_name))
+        home_score = str(response['matches'][i]['score']['fullTime']['homeTeam'])
+        away_score = str(response['matches'][i]['score']['fullTime']['awayTeam'])
+        home_team = str(response['matches'][i]['homeTeam']['name'])
+        away_team = str(response['matches'][i]['awayTeam']['name'])
+        if(home_score-3 > away_score or home_score < away_score-3):
+            status = choice(i18n.HIGH_DEFEATED)
+        else:
+            status = choice(i18n.DEFEATED)
+        if (home_score > away_score):
+            return(choice(i18n.TEAM_1_WON).format(team1=home_team,team2=away_team,liga=str(response['matches'][i]['competition']['name']),count1=home_score,count2=away_score,verb=status))
+        elif (home_score < away_score):
+            return(choice(i18n.TEAM_2_WON).format(team1=home_team,team2=away_team,liga=str(response['matches'][i]['competition']['name']),count1=home_score,count2=away_score,verb=status))
+        elif (home_score == away_score):
+            return(choice(i18n.DRAW).format(team1=home_team,team2=away_team,liga=str(response['matches'][i]['competition']['name']),count1=home_score,count2=away_score))
     elif(ask == 1):
         response = get_data('/v2/teams/'+team_id+'/matches?status=SCHEDULED&limit=1',key)
+        if response["count"] == 0:
+            return(choice(i18n.NO_LATER_GAMES).format(team=team_name))
         if (tag_diff(str(response['matches'][0]['utcDate'])) == 0):
             datum = str(response['matches'][0]['utcDate'])
-            datum = "um "+str(int(re.split('[^\d]', datum)[3])+1)+' Uhr  '+str(re.split('[^\d]', datum)[4])
+            datum = choice(i18n.TIME).format(hour=str(int(re.split('[^\d]', datum)[3])+1),minute=str(re.split('[^\d]', datum)[4]))
         else:
             datum = str(response['matches'][0]['utcDate'])
-            datum = "am "+str(re.split('[^\d]', datum)[2])+'. '+str(monate[int(re.split('[^\d]', datum)[1])-1])+' '+str(re.split('[^\d]', datum)[0])+' um '+str(int(re.split('[^\d]', datum)[3])+1)+' Uhr  '+str(re.split('[^\d]', datum)[4])
+            datum = choice(i18n.TIME_AND_DAY).format(day=str(re.split('[^\d]', datum)[2]),month=str(i18n.months[int(re.split('[^\d]', datum)[1])-1]),year=str(re.split('[^\d]', datum)[0]),hour=str(int(re.split('[^\d]', datum)[3])+1),minute=str(re.split('[^\d]', datum)[4]))
+            
         if (team_id == str(response['matches'][0]['homeTeam']['id'])):
-            return('Das Team "'+str(response['matches'][0]['homeTeam']['name'])+'" trifft auf das Team "'+str(response['matches'][0]['awayTeam']['name'])+'" '+datum)
+            return(choice(i18n.NEXT_GAME).format(team1=str(response['matches'][0]['homeTeam']['name']),team2=str(response['matches'][0]['awayTeam']['name']),date=datum))
         else:
-            return('Das Team "'+str(response['matches'][0]['awayTeam']['name'])+'" trifft auf das Team "'+str(response['matches'][0]['homeTeam']['name'])+'" '+datum)
+            return(choice(i18n.NEXT_GAME).format(team1=str(response['matches'][0]['awayTeam']['name']),team2=str(response['matches'][0]['homeTeam']['name']),date=datum))
     elif(ask == 2):
         response = get_data("/v2/teams/"+str(team_id),key)
         for i in response["squad"]:
@@ -102,6 +75,6 @@ def get_football_result(search,ask,key):
                 trainer = i["name"]
                 break
         try:
-            return("Das Team {} wird von dem Trainer {} trainiert.".format(response["name"],trainer))
+            return(choice(i18n.TRAINER_NAME).format(team=team_name,trainer=trainer))
         except:
-            return("Das Team {} besitzt zurzeit keinen richtigen Trainer.".format(response["name"]))
+            return(choice(i18n.NO_TRAINER).format(team=team_name))
