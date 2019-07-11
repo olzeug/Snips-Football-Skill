@@ -1,4 +1,4 @@
-months = ['Januar', 'Februar', 'März','April','Mai','Juni','Juli','August','September','November','Dezember']
+months = ['Januar', 'Februar', 'März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']
 ligen = ['BL1', 'PD', 'PL', 'SA', 'FL1','DED']
 NO_GAMES_EXIST = ["Für {team} sind keine beendeten Spiele vorhanden.","Ich habe keine beendeten Spiele für {team} gefunden."]
 HIGH_DEFEATED = ['vom Platz gefegt.','abserviert.','vernichtet.','besiegt.','bezwungen.','geschlagen.']
