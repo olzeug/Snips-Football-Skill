@@ -59,11 +59,11 @@ def get_football_result(search,ask,key):
             return(choice(i18n.NO_LATER_GAMES).format(team=team_name))
         if (tag_diff(str(response['matches'][0]['utcDate'])) == 0):
             datum = str(response['matches'][0]['utcDate'])
-            datum = choice(i18n.TIME).format(hour=str(int(re.split('[^\d]', datum)[3])+1),minute=str(re.split('[^\d]', datum)[4]))
+            datum = choice(i18n.TIME).format(hour=str(int(re.split('[^\d]', datum)[3])+i18n.UTC),minute=str(re.split('[^\d]', datum)[4]))
         else:
             datum = str(response['matches'][0]['utcDate'])
-            datum = choice(i18n.TIME_AND_DAY).format(day=str(re.split('[^\d]', datum)[2]),month=str(i18n.months[int(re.split('[^\d]', datum)[1])-1]),year=str(re.split('[^\d]', datum)[0]),hour=str(int(re.split('[^\d]', datum)[3])+1),minute=str(re.split('[^\d]', datum)[4]))
-            
+            datum = choice(i18n.TIME_AND_DAY).format(day=str(re.split('[^\d]', datum)[2]),month=str(i18n.months[int(re.split('[^\d]', datum)[1])-1]),year=str(re.split('[^\d]', datum)[0]),hour=str(int(re.split('[^\d]', datum)[3])+i18n.UTC),minute=str(re.split('[^\d]', datum)[4]))
+ 
         if (team_id == str(response['matches'][0]['homeTeam']['id'])):
             return(choice(i18n.NEXT_GAME).format(team1=str(response['matches'][0]['homeTeam']['name']),team2=str(response['matches'][0]['awayTeam']['name']),date=datum))
         else:
@@ -78,3 +78,4 @@ def get_football_result(search,ask,key):
             return(choice(i18n.TRAINER_NAME).format(team=team_name,trainer=trainer))
         except:
             return(choice(i18n.NO_TRAINER).format(team=team_name))
+
