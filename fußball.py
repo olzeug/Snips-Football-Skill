@@ -39,10 +39,10 @@ def get_football_result(search,ask,key):
         i=-1
         if response["count"] == 0:
             return(choice(i18n.NO_GAMES_EXIST).format(team=team_name))
-        home_score = str(response['matches'][i]['score']['fullTime']['homeTeam'])
-        away_score = str(response['matches'][i]['score']['fullTime']['awayTeam'])
-        home_team = str(response['matches'][i]['homeTeam']['name'])
-        away_team = str(response['matches'][i]['awayTeam']['name'])
+        home_score = response['matches'][i]['score']['fullTime']['homeTeam']
+        away_score = response['matches'][i]['score']['fullTime']['awayTeam']
+        home_team = response['matches'][i]['homeTeam']['name']
+        away_team = response['matches'][i]['awayTeam']['name']
         if(home_score-3 > away_score or home_score < away_score-3):
             status = choice(i18n.HIGH_DEFEATED)
         else:
