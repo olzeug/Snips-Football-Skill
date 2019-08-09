@@ -79,3 +79,5 @@ def get_football_result(search,ask,key):
         except:
             return(choice(i18n.NO_TRAINER).format(team=team_name))
 
+def get_pos(liga,position=1)
+    return(choice(i18n.TABLE_PLACE).format(team=response["standings"][0]["table"][1]["team"]["name"], position=position, points=response["standings"][0]["table"][1]["points"]))
