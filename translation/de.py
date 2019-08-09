@@ -12,5 +12,5 @@ TIME_AND_DAY = ["am {day}. {month} {year} um {hour} Uhr {minute}"]
 NEXT_GAME = ['Das Team "{team1}" trifft auf das Team "{team2}" {date}']
 TRAINER_NAME = ["Das Team {team} wird von dem Trainer {trainer} trainiert.","{team} wird von {trainer} trainiert.","{trainer} trainiert {team}."]
 NO_TRAINER = ["Das Team {team} besitzt zurzeit keinen richtigen Trainer."]
-UTC = 2
 TABLE_PLACE = ["{team} ist auf Platz {position} mit {points} Punkten."]
+UTC = 2
